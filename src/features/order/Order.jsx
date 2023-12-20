@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 // Test ID: IIDSAT
 
 import {
   calcMinutesLeft,
   formatCurrency,
   formatDate,
-} from "../../utils/helpers";
+} from "../../utilities/helpers";
 
 const order = {
   id: "ABCDEF",
