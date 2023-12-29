@@ -7,7 +7,8 @@ import { createOrder } from '../../services/apiRestaurant';
 import { useSelector } from 'react-redux';
 import Button from '../../ui/Button';
 import EmptyCart from '../cart/EmptyCart';
-import { getCart } from '../cart/cartSlice';
+import { clearCart, getCart } from '../cart/cartSlice';
+import store from '../../store';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -109,10 +110,10 @@ export async function action({ request }) {
 
   //If everything is okay, create order and redirect
 
-  // const newOrder = await createOrder(order);
+  const newOrder = await createOrder(order);
+  store.dispatch(clearCart());
 
-  // return redirect(`/order/${newOrder.id}`);
-  return null;
+  return redirect(`/order/${newOrder.id}`);
 }
 
 export default CreateOrder;
