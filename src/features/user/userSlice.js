@@ -2,9 +2,8 @@
 /* eslint-disable no-unused-vars */
 // /* eslint-disable no-undef */
 // /* eslint-disable no-unused-vars */
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAddress } from '../../services/apiGeocoding';
-
 
 function getPosition() {
   return new Promise(function (resolve, reject) {
@@ -12,7 +11,7 @@ function getPosition() {
   });
 }
 
-async function fetchAddress() {
+const fetchAddress = createAsyncThunk('user/fetchAddress', async function () {
   // 1) We get the user's geolocation position
   const positionObj = await getPosition();
   const position = {
@@ -24,11 +23,16 @@ async function fetchAddress() {
   const addressObj = await getAddress(position);
   const address = `${addressObj?.locality}, ${addressObj?.city} ${addressObj?.postcode}, ${addressObj?.countryName}`;
 
-//   // 3) Then we return an object with the data that we are interested in
-//   return { position, address };
-}
+  //   // 3) Then we return an object with the data that we are interested in
+  return { position, address };
+});
+
 const initialState = {
   username: '',
+  status: 'idle',
+  position: {},
+  address: '',
+  error: '',
 };
 
 const userSlice = createSlice({
@@ -39,7 +43,23 @@ const userSlice = createSlice({
       state.username = action.payload;
     },
   },
+  extraReducers: (builder) =>
+    builder
+      .addCase(fetchAddress.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchAddress.fulfilled, (state, action) => {
+        state.position = action.payload.position;
+        state.address = action.payload.address;
+        state.state = 'idle';
+      })
+      .addCase(fetchAddress.rejected, (state, action) => {
+        state.status = 'error';
+        state.error = action.error.message;
+      }),
 });
+
+
 
 export const user = (state) => state.user.username;
 

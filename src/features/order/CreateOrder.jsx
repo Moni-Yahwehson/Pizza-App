@@ -4,10 +4,11 @@
 import { useState } from 'react';
 import { Form, redirect, useNavigation, useActionData } from 'react-router-dom';
 import { createOrder } from '../../services/apiRestaurant';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '../../ui/Button';
 import EmptyCart from '../cart/EmptyCart';
 import { clearCart, getCart, getTotalCartPrice } from '../cart/cartSlice';
+import { fetchAddress } from '../user/userSlice';
 import store from '../../store';
 import { formatCurrency } from '../../utilities/helpers';
 
@@ -24,6 +25,7 @@ function CreateOrder() {
   const isSubmitting = navigation.state === 'submitting';
 
   const formErrors = useActionData();
+  const dispatch = useDispatch();
   const cart = useSelector(getCart);
   const totalCartPrice = useSelector(getTotalCartPrice);
   const priorityPrice = withPriority ? totalCartPrice * 0.2 : 0;
@@ -34,7 +36,7 @@ function CreateOrder() {
   return (
     <div className="px-4 py-6">
       <h2 className="mb-8 text-xl font-semibold">Ready to order? Let's go!</h2>
-
+      <button onClick={() => dispatch(fetchAddress())}>Get position</button>
       {/* <Form method="POST" action="/order/new"> */}
       <Form method="POST">
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
