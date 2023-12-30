@@ -85,7 +85,7 @@ function CreateOrder() {
             </p>
           )}
           {!position.latitude && !position.longitude && (
-            <span className="top-[3px] md:top-[5px] absolute right-[3px] z-50 md:right-[5px]">
+            <span className="absolute right-[3px] top-[3px] z-50 md:right-[5px] md:top-[5px]">
               <Button
                 disabled={isLoadingAddress}
                 defaultValue={address}
@@ -118,6 +118,15 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+          <input
+            type="hidden"
+            name="position"
+            value={
+              position.longitude && position.latitude
+                ? `${position.latitude}, ${position.longitude}`
+                : ''
+            }
+          />
           <Button disabled={isSubmitting || isLoadingAddress} type="primary">
             {isSubmitting
               ? 'Placing Order...'
