@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Link, useNavigate } from 'react-router-dom';
 
 function LinkButton({ children, to }) {
@@ -8,9 +7,10 @@ function LinkButton({ children, to }) {
   if (to === '-1')
     return (
       <button className={className} onClick={() => navigate(-1)}>
-        &larr; Go back
+        {children}
       </button>
     );
+
   return (
     <Link to={to} className={className}>
       {children}

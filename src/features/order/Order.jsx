@@ -1,30 +1,28 @@
-/* eslint-disable react-refresh/only-export-components */
-/* eslint-disable no-unused-vars */
 // Test ID: IIDSAT
+import { useFetcher, useLoaderData } from 'react-router-dom';
+
 import OrderItem from './OrderItem';
 
 import { getOrder } from '../../services/apiRestaurant';
-import { useFetcher, useLoaderData } from 'react-router-dom';
 import {
   calcMinutesLeft,
   formatCurrency,
   formatDate,
-} from '../../utilities/helpers';
+} from '../../utils/helpers';
 import { useEffect } from 'react';
+import UpdateOrder from './UpdateOrder';
 
 function Order() {
   const order = useLoaderData();
-
   const fetcher = useFetcher();
 
   useEffect(
     function () {
       if (!fetcher.data && fetcher.state === 'idle') fetcher.load('/menu');
     },
-    [fetcher],
+    [fetcher]
   );
 
-  console.log(fetcher.data);
   // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
   const {
     id,
@@ -35,6 +33,7 @@ function Order() {
     estimatedDelivery,
     cart,
   } = order;
+
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
   return (
@@ -64,7 +63,8 @@ function Order() {
           (Estimated delivery: {formatDate(estimatedDelivery)})
         </p>
       </div>
-      <ul className="divide-y divide-stone-200 border-b border-t ">
+
+      <ul className="dive-stone-200 divide-y border-b border-t">
         {cart.map((item) => (
           <OrderItem
             item={item}
@@ -91,6 +91,8 @@ function Order() {
           To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}
         </p>
       </div>
+
+      {!priority && <UpdateOrder order={order} />}
     </div>
   );
 }

@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
-import { formatCurrency } from '../../utilities/helpers';
+import { formatCurrency } from '../../utils/helpers';
+
 function OrderItem({ item, isLoadingIngredients, ingredients }) {
   const { quantity, name, totalPrice } = item;
 
@@ -9,11 +9,11 @@ function OrderItem({ item, isLoadingIngredients, ingredients }) {
         <p>
           <span className="font-bold">{quantity}&times;</span> {name}
         </p>
-        <p>{formatCurrency(totalPrice)}</p>
-        <p className="text-sm capitalize italic text-stone-500">
-          {isLoadingIngredients ? 'Loading...' : ingredients.join(',')}
-        </p>
+        <p className="font-bold">{formatCurrency(totalPrice)}</p>
       </div>
+      <p className="text-sm capitalize italic text-stone-500">
+        {isLoadingIngredients ? 'Loading...' : ingredients.join(', ')}
+      </p>
     </li>
   );
 }
