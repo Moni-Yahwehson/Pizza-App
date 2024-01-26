@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../ui/Button';
 import DeleteItem from '../cart/DeleteItem';
